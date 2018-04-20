@@ -4,7 +4,7 @@ services:
   language-lessons:
     image: omelhoro1/language-lessons
     container_name: language-lessons
-     restart: unless-stopped
+    restart: unless-stopped
 #    ports:
 #      - 3000:3000
     depends_on:
