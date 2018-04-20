@@ -9,6 +9,7 @@
 (def isClient (not (nil? (try (.-document js/window)
                               (catch js/Object e nil)))))
 
+
 (def rflush reagent/flush)
 
 (defn add-test-div [name]

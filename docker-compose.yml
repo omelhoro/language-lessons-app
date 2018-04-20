@@ -4,7 +4,7 @@ services:
   language-lessons:
     image: omelhoro1/language-lessons
     container_name: language-lessons
- #    restart: unless-stopped
+     restart: unless-stopped
 #    ports:
 #      - 3000:3000
     depends_on:
@@ -23,8 +23,8 @@ services:
   datomic-peer-ll:
     image: omelhoro1/datomic-docker
     container_name: datomic-peer-ll
-    ports:
-      - 8998:8998
+#    ports:
+#      - 8998:8998
     environment:
       - DATABASE_NAME=language-lessons
       - DATABASE_URL=datomic:dev://datomic-transactor-ll:4334
@@ -34,14 +34,14 @@ services:
     depends_on:
       - datomic-transactor-ll
     command: ./bin/start-peer.sh
-#    restart: unless-stopped
+    restart: unless-stopped
     networks:
       - proxy-tier
 
   datomic-transactor-ll:
     image: omelhoro1/datomic-docker
     container_name: datomic-transactor-ll
-#    restart: unless-stopped
+    restart: unless-stopped
     command:  ./bin/transactor ./config/dev-transactor-test.properties
     volumes:
       - ./datomic-data:/data
