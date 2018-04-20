@@ -1,5 +1,8 @@
 FROM clojure:lein-alpine AS builder
 
+ARG DATOMIC_USER
+ARG DATOMIC_PASS
+
 WORKDIR /app
 COPY ./project.clj /app
 RUN lein deps

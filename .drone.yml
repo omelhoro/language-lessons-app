@@ -18,7 +18,8 @@ pipeline:
     image: plugins/docker
     storage_driver: vfs
     repo: omelhoro1/language-lessons
-    secrets: [ docker_username, docker_password ]
+    build_args_from_env: [ datomic_user, datomic_pass]
+    secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
     when:
       branch: master
 
