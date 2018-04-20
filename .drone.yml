@@ -1,17 +1,34 @@
 pipeline:
 
+#  docker-test:
+#    group: build
+#    image: plugins/docker
+#    storage_driver: vfs
+#    repo: omelhoro1/language-lessons
+#    tags: test
+#    secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
+#    build_args_from_env: [ datomic_user, datomic_pass]
+#    dry_run: true
+#    dockerfile: Dockerfile.test
+#    when:
+#      branch: master
+
   docker-test:
     group: build
-    image: plugins/docker
-    storage_driver: vfs
-    repo: omelhoro1/language-lessons
-    tags: test
+    image: docker
+#    storage_driver: vfs
+#    repo: omelhoro1/language-lessons
+#    tags: test
     secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
-    build_args_from_env: [ datomic_user, datomic_pass]
-    dry_run: true
-    dockerfile: Dockerfile.test
+#    build_args_from_env: [ datomic_user, datomic_pass]
+#    dry_run: true
+#    dockerfile: Dockerfile.test
+    commands:
+      - docker build -f Dockerfile.test .  --build-arg DATOMIC_PASS=$DATOMIC_PASS --build-arg DATOMIC_USER=$DATOMIC_USER
     when:
       branch: master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   docker:
     group: build
