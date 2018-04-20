@@ -1,0 +1,41 @@
+pipeline:
+
+  docker-test:
+    group: build
+    image: plugins/docker
+    storage_driver: vfs
+    repo: omelhoro1/language-lessons
+    tags: test
+    secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
+    build_args_from_env: [ datomic_user, datomic_pass]
+    dry_run: true
+    dockerfile: Dockerfile.test
+    when:
+      branch: master
+
+  docker:
+    group: build
+    image: plugins/docker
+    storage_driver: vfs
+    repo: omelhoro1/language-lessons
+    secrets: [ docker_username, docker_password ]
+    when:
+      branch: master
+
+  deploy:
+    image: drillster/drone-rsync
+    user: captain
+    hosts: [ "software-unchained.com" ]
+    port: 22
+    target: /tmp/language-lessons-${DRONE_COMMIT}/
+    include:
+      - "docker-compose.yml"
+    exclude:
+      - "**.*"
+    delete: false
+    secrets: [ rsync_key ]
+    script:
+      - docker-compose -f /tmp/language-lessons-${DRONE_COMMIT}/docker-compose.yml pull
+      - docker-compose -f /tmp/language-lessons-${DRONE_COMMIT}/docker-compose.yml -p language-lessons up -d
+    when:
+      branch: master

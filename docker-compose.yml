@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  language-lessons:
+    image: omelhoro1/language-lessons
+    container_name: language-lessons
+ #    restart: unless-stopped
+#    ports:
+#      - 3000:3000
+    depends_on:
+      - datomic-transactor-ll
+      - datomic-peer-ll
+    labels:
+      - "traefik.frontend.rule=Host:language-lessons.software-unchained.com"
+    environment:
+      - DATABASE_NAME=language-lessons
+      - DATABASE_PASS=mega-pass
+      - DATABASE_AKEY=123
+      - PEER_HOST=datomic-peer-ll:8998
+    networks:
+      - proxy-tier
+
+  datomic-peer-ll:
+    image: omelhoro1/datomic-docker
+    container_name: datomic-peer-ll
+    ports:
+      - 8998:8998
+    environment:
+      - DATABASE_NAME=language-lessons
+      - DATABASE_URL=datomic:dev://datomic-transactor-ll:4334
+      - DATABASE_PASS=mega-pass
+      - DATABASE_AKEY=123
+      - STORAGE_PASS=pass
+    depends_on:
+      - datomic-transactor-ll
+    command: ./bin/start-peer.sh
+#    restart: unless-stopped
+    networks:
+      - proxy-tier
+
+  datomic-transactor-ll:
+    image: omelhoro1/datomic-docker
+    container_name: datomic-transactor-ll
+#    restart: unless-stopped
+    command:  ./bin/transactor ./config/dev-transactor-test.properties
+    volumes:
+      - ./datomic-data:/data
+    networks:
+      - proxy-tier
+
+networks:
+  proxy-tier:
+    external: true
