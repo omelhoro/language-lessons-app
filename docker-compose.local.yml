@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  datomic-peer-ll:
+    ports:
+     - 8998:8998
+
+  datomic-transactor-ll:
+    volumes:
+      - ./datomic-data:/data
