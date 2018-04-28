@@ -13,12 +13,22 @@ pipeline:
 #    when:
 #      branch: master
 
+#  docker:
+#    group: build
+#    image: plugins/docker
+#    storage_driver: vfs
+#    repo: omelhoro1/language-lessons
+#    build_args_from_env: [ datomic_user, datomic_pass]
+#    secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
+#    when:
+#      branch: master
+
   docker-test:
     group: build
     image: docker
     secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
     commands:
-      - docker build -f Dockerfile.test .  --build-arg DATOMIC_PASS=$DATOMIC_PASS --build-arg DATOMIC_USER=$DATOMIC_USER
+      - docker build -t omelhoro1/language-lessons:test -f Dockerfile.test .  --build-arg DATOMIC_PASS=$DATOMIC_PASS --build-arg DATOMIC_USER=$DATOMIC_USER
     when:
       branch: master
     volumes:
@@ -29,24 +39,13 @@ pipeline:
     image: docker
     secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
     commands:
-      - docker build .  --build-arg DATOMIC_PASS=$DATOMIC_PASS --build-arg DATOMIC_USER=$DATOMIC_USER
+      - docker build -t omelhoro1/language-lessons:latest .  --build-arg DATOMIC_PASS=$DATOMIC_PASS --build-arg DATOMIC_USER=$DATOMIC_USER
       - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       - docker push omelhoro1/language-lessons
     when:
       branch: master
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-
-#  docker:
-#    group: build
-#    image: plugins/docker
-#    storage_driver: vfs
-#    repo: omelhoro1/language-lessons
-#    build_args_from_env: [ datomic_user, datomic_pass]
-#    secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
-#    when:
-#      branch: master
 
   deploy:
     image: drillster/drone-rsync
