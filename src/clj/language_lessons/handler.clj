@@ -3,6 +3,7 @@
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
             [language-lessons.middleware :refer [wrap-middleware]]
+            [ring.middleware.gzip :refer [wrap-gzip]]
             [ring.util.response :refer [response]]
             [datomic.client.api :as d]
     ;[datomic.api :as d]
@@ -61,9 +62,9 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name    "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-js "https://code.jquery.com/jquery-3.1.1.min.js")
+;   (include-js "https://code.jquery.com/jquery-3.1.1.min.js")
+;   (include-js "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js")
    (include-css "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.css")
-   (include-js "https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.js")
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
 
 (defn loading-page []
@@ -118,4 +119,5 @@
              wrap-json-response
              wrap-json-body
              wrap-middleware
+             wrap-gzip
              ))

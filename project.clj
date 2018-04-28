@@ -18,6 +18,7 @@
                  [prismatic/schema "1.1.9"]
                  [yogthos/config "1.1.1"]
                  [cljs-ajax "0.7.3"]
+                 [bk/ring-gzip "0.3.0"]
                  [org.clojure/clojurescript "1.10.238"
                   :scope "provided"]
                  [org.clojure/core.async "0.4.474"]
