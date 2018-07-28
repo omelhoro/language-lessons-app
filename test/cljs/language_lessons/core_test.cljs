@@ -9,7 +9,6 @@
 (def isClient (not (nil? (try (.-document js/window)
                               (catch js/Object e nil)))))
 
-
 (def rflush reagent/flush)
 
 (defn add-test-div [name]
@@ -35,19 +34,19 @@
           false))))
 
 
-(deftest test-ajax
-  (cljs.test/async done
-    (go
-      (with-redefs
-        [ajax.core/GET
-         (fn
-           [url {handler :handler}]
-           (do
-             (is (= "/api/people" url))
-             (handler {:body "Hello Igor"})))]
-        (is (= {:body "Hello Igor"} (<! (rc/get-people-srvc))))
-        (done)
-        ))))
+;; (deftest test-ajax
+;;   (cljs.test/async done
+;;     (go
+;;       (with-redefs
+;;         [ajax.core/GET
+;;          (fn
+;;            [url {handler :handler}]
+;;            (do
+;;              (is (= "/api/people" url))
+;;              (handler {:body "Hello Igor"})))]
+;;         (is (= {:body "Hello Igor"} (<! (rc/get-people-srvc))))
+;;         (done)
+;;         ))))
 
 (deftest test-home
   (with-mounted-component
