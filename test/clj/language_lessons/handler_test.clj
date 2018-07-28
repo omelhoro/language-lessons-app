@@ -18,30 +18,30 @@
 
 (run-jetty handler/app {:port 4001 :join? false})
 
-(deftest is-test-async-post
-  (let [chan (async/chan)]
-    (with-redefs [datomic.client.api/transact (fn [-conn {data :tx-data}] (d-api/transact conn data))]
-      (do (POST "http://localhost:4001/api/people"
-                {:response-format :json
-                 :format          :json
-                 :handler         (fn [resp] (>!! chan resp))
-                 :error-handler   (fn [resp] (>!! chan resp))
-                 :params          {"person/name" "Igor"}
-                 })
-          (is (= {"result" "success"} (async/<!! chan)))
-          ))))
+;; (deftest is-test-async-post
+;;   (let [chan (async/chan)]
+;;     (with-redefs [datomic.client.api/transact (fn [-conn {data :tx-data}] (d-api/transact conn data))]
+;;       (do (POST "http://localhost:4001/api/people"
+;;                 {:response-format :json
+;;                  :format          :json
+;;                  :handler         (fn [resp] (>!! chan resp))
+;;                  :error-handler   (fn [resp] (>!! chan resp))
+;;                  :params          {"person/name" "Igor"}
+;;                  })
+;;           (is (= {"result" "success"} (async/<!! chan)))
+;;           ))))
 
-(deftest is-test-async
-  (let [chan (async/chan)]
-    (with-redefs [datomic.client.api/q d-api/q
-                  datomic.client.api/db d-api/db]
-      (do (GET "http://localhost:4001/api/people"
-               {:response-format :json
-                :handler         (fn [resp] (>!! chan resp))}
-               :error-handler (fn [resp] (>!! chan resp))
-               )
-          (is (= 1 (count (async/<!! chan))))
-          ))))
+;; (deftest is-test-async
+;;   (let [chan (async/chan)]
+;;     (with-redefs [datomic.client.api/q d-api/q
+;;                   datomic.client.api/db d-api/db]
+;;       (do (GET "http://localhost:4001/api/people"
+;;                {:response-format :json
+;;                 :handler         (fn [resp] (>!! chan resp))}
+;;                :error-handler (fn [resp] (>!! chan resp))
+;;                )
+;;           (is (= 1 (count (async/<!! chan))))
+;;           ))))
 
 
 (defn default-chan []
@@ -52,5 +52,3 @@
         f (future (<!! c))]
     (>!! c 42)
     (is (= @f 42))))
-
-
