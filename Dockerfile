@@ -12,5 +12,6 @@ RUN lein uberjar
 FROM openjdk:alpine
 WORKDIR /app
 COPY --from=builder /app/target/language-lessons.jar /app
+COPY --from=builder /app/schema.edn /app 
 CMD java -jar /app/language-lessons.jar
 EXPOSE 3000
