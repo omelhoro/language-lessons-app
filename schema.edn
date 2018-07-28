@@ -1,0 +1,18 @@
+{:input-objects
+ {:person_template
+  {:fields {:id   {:type ID}
+            :name {:type String}}}}
+ :objects
+ {:person
+  {:fields {:id   {:type ID}
+            :name {:type String}}}}
+
+ :queries
+ {:person {:type    (non-null :person)
+           :resolve :get-people}
+  :people {:type (list :person)
+           :resolve :get-people}}
+ :mutations
+ {:update_person {:type :person :args {:data {:type :person_template}} :resolve :update-person}
+  :create_person {:type :person :resolve :create-person :args {:data {:type :person_template}}}
+  :delete_person {:type :person :resolve :delete-person :args {:id {:type ID}}}}}

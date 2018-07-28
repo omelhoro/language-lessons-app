@@ -7,19 +7,21 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [com.datomic/datomic-pro "0.9.5697" :exclusions [com.google.guava/guava]]
                  [ring-server "0.5.0"]
-                 [reagent "0.7.0"]
+                 [reagent "0.8.1"]
+                 [com.walmartlabs/lacinia "0.28.0"]
                  [reagent-utils "0.3.1"]
                  [ring "1.6.3"]
-                 [ring/ring-defaults "0.3.1"]
-                 [compojure "1.6.0"]
-                 [com.datomic/client-pro "0.8.14" :exclusions [org.eclipse.jetty/jetty-http org.eclipse.jetty/jetty-util org.eclipse.jetty/jetty-client]]
-                 [info.sunng/ring-jetty9-adapter "0.10.5"]
+                 [ring/ring-defaults "0.3.2"]
+                 [compojure "1.6.1"]
+                 [com.datomic/client-pro "0.8.17" :exclusions [org.eclipse.jetty/jetty-http org.eclipse.jetty/jetty-util org.eclipse.jetty/jetty-client]]
+                 [info.sunng/ring-jetty9-adapter "0.11.2"]
                  [hiccup "1.0.5"]
                  [prismatic/schema "1.1.9"]
                  [yogthos/config "1.1.1"]
-                 [cljs-ajax "0.7.3"]
+                 [cljs-ajax "0.7.4"]
                  [bk/ring-gzip "0.3.0"]
-                 [org.clojure/clojurescript "1.10.238"
+                 [district0x/graphql-query "1.0.5"]
+                 [org.clojure/clojurescript "1.10.339"
                   :scope "provided"]
                  [org.clojure/core.async "0.4.474"]
                  [ring/ring-json "0.4.0"]
@@ -30,12 +32,12 @@
   :repositories {"my.datomic.com" {:url      "https://my.datomic.com/repo"
                                    :username :env/DATOMIC_USER
                                    :password :env/DATOMIC_PASS
-                                   ;:creds :gpg
                                    }}
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]
             [lein-cloverage "1.0.10"]
+            [lein-ancient "0.6.15"]
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
 
@@ -124,11 +126,11 @@
   :profiles {:dev     {:repl-options {:init-ns          language-lessons.repl
                                       :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
-                       :dependencies [[binaryage/devtools "0.9.9"]
+                       :dependencies [[binaryage/devtools "0.9.10"]
                                       [ring/ring-mock "0.3.2"]
                                       [ring/ring-devel "1.6.3"]
-                                      [prone "1.5.1"]
-                                      [figwheel-sidecar "0.5.15"]
+                                      [prone "1.6.0"]
+                                      [figwheel-sidecar "0.5.16"]
                                       [org.clojure/tools.nrepl "0.2.13"]
                                       [com.cemerick/piggieback "0.2.2"]
                                       [pjstadig/humane-test-output "0.8.3"]
@@ -136,7 +138,7 @@
                                       ]
 
                        :source-paths ["env/dev/clj"]
-                       :plugins      [[lein-figwheel "0.5.15"]
+                       :plugins      [[lein-figwheel "0.5.16"]
                                       [lein-doo "0.1.10"]
                                       [cider/cider-nrepl "0.15.1"]
                                       [org.clojure/tools.namespace "0.3.0-alpha4"
@@ -151,9 +153,9 @@
                        :env          {:dev true}}
 
              :uberjar {
-                       :hooks        [minify-assets.plugin/hooks]
+                       ; :hooks        [minify-assets.plugin/hooks]
                        :source-paths ["env/prod/clj"]
-                       :prep-tasks   ["compile" ["cljsbuild" "once" "min"]]
+                       ; :prep-tasks   ["compile" ["cljsbuild" "once" "min"]]
                        :env          {:production true}
                        :aot          :all
                        :omit-source  true

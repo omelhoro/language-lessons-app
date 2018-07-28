@@ -4,8 +4,6 @@
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
 
-(println "Start something")
-
 (defn -main [& args]
   (let [port (Integer/parseInt (or (env :port) "3000"))]
     (do
