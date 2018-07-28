@@ -175,16 +175,8 @@
                                                 query
                                                 vars
                                                 nil)
-                                        a (println result)
                                         ]
                                     (json/write-str result))}))
-  (POST "/api/people"
-    []
-    (fn [request]
-      (do (s/validate {(s/required-key "person/name") (s/both s/Str (s/pred not-empty))} (:body request))
-          (d/transact conn {:tx-data [(merge {:person/gid (str (java.util.UUID/randomUUID))} (keywordize-keys (:body request)))]})
-          (response {:result "success"}))))
-
   (resources "/")
   (not-found "Not Found"))
 
