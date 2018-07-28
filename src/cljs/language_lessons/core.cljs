@@ -1,10 +1,7 @@
 (ns language-lessons.core
   (:require [reagent.core :as reagent :refer [atom]]
             [secretary.core :as secretary :include-macros true]
-            [cljs.core.async :as async]
-            [ajax.core :refer [GET POST PUT]]
-            [active-graphql.builder :as b]
-            [active-graphql.core :refer [create-request print-document]]
+            [ajax.core :refer [POST]]
             [clojure.walk :refer [stringify-keys]]
             [graphql-query.core :refer [graphql-query]]
             [accountant.core :as accountant])
@@ -62,8 +59,9 @@
                             [list-people-q :data "people"]
                             #(->> %
                                   (position (fn [item] (= (get item "id") (get person "id"))))
-                                  ((fn [ix] (into [] (concat (subvec % 0 ix) (subvec % (inc ix)))))))))}} (fn [data {fetch :fetch}]
-                                                                                                            [:button.ui.red.button.mini {:on-click #(fetch {:vars {:id id}})} "Delete"])))
+                                  ((fn [ix] (into [] (concat (subvec % 0 ix) (subvec % (inc ix)))))))))}}
+   (fn [data {fetch :fetch}]
+     [:button.ui.red.button.mini {:on-click #(fetch {:vars {:id id}})} "Delete"])))
 
 (defn edit-person [id state]
   (graphql
@@ -150,10 +148,10 @@
                                                             .-value
                                                             ((fn [name] (swap! state assoc-in [:new-person "name"] name)))))}]
                              [:button.ui.button {:on-click (fn [evt]
-                                                                                                                                                               (do
-                                                                                                                                                                 (.preventDefault evt)
-                                                                                                                                                                 (fetch {:vars {:data (get @state :new-person)}})))}
-                                                                                                                                "Create Person"]]]]))))
+                                                             (do
+                                                               (.preventDefault evt)
+                                                               (fetch {:vars {:data (get @state :new-person)}})))}
+                              "Create Person"]]]]))))
 
 (defn home-page []
   [:div [:h2 "Welcome to the Datomic Demo"]
