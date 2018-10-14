@@ -5,7 +5,6 @@ COPY ./frontend/project.clj /app
 RUN lein deps
 COPY ./frontend /app
 RUN lein cljsbuild once min
-RUN find target
 
 FROM clojure:lein-alpine AS backend-builder
 
