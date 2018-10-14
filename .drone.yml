@@ -28,7 +28,7 @@ pipeline:
     image: docker
     secrets: [ docker_username, docker_password, datomic_user, datomic_pass ]
     commands:
-      - docker build -t omelhoro1/language-lessons:test -f ./frontend/Dockerfile.test ./frontend
+      - docker build -t omelhoro1/language-lessons:test -f ./frontend/test/Dockerfile.test ./frontend
     when:
       branch: master
     volumes:
