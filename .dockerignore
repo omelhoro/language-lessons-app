@@ -1,7 +1,10 @@
-/datomic-pro-0.9.5697
-/coverage
-/datomic-docker
-/datomic-data
-/node_modules
-/target
-/.idea
+**/coverage
+**/datomic-docker
+**/datomic-data
+**/node_modules
+**/target
+database
+.idea
+.git
+*.log
+.#*

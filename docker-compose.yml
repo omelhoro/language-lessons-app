@@ -8,6 +8,8 @@ services:
     depends_on:
       - datomic-transactor-ll
       - datomic-peer-ll
+    ports:
+      - 3001:3000
     labels:
       - "traefik.frontend.rule=Host:language-lessons.software-unchained.com"
     environment:
@@ -40,7 +42,7 @@ services:
     restart: unless-stopped
     command:  ./bin/transactor ./config/dev-transactor-test.properties
     volumes:
-      - /home/captain/datomic-data:/data
+      - ./datomic-data:/data
     networks:
       - proxy-tier
 

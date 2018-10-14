@@ -1,5 +1,5 @@
 .#*
-/target
+target
 /classes
 /checkouts
 profiles.clj
@@ -15,9 +15,9 @@ pom.xml.asc
 /.env
 /.sass-cache
 /datomic-pro-0.9.5697
-/datomic-data
-/datomic-docker
-/coverage
+datomic-data
+datomic-docker
+coverage
 doo-index.html
 /.idea
-/node_modules
+node_modules

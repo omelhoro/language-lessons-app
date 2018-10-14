@@ -1,0 +1,11 @@
+FROM omelhoro1/clj-chrome-headless
+
+WORKDIR /app
+
+COPY project.clj /app
+RUN lein deps
+
+COPY ./ /app
+
+# RUN lein cloverage
+RUN CHROME_BIN=$(node -p -e "require('puppeteer').executablePath()") lein doo chrome-no-sandbox once
