@@ -1,4 +1,4 @@
-(ns language-lessons.core
+(ns ^:figwheel-hooks language-lessons.core
   (:require [reagent.core :as reagent :refer [atom]]
             [secretary.core :as secretary :include-macros true]
             [ajax.core :refer [POST]]
@@ -85,7 +85,7 @@
    (fn [data {fetch :fetch}]
      (let [{name "name" id "id"} (get-in @state [:people-to-edit id])]
        [:div [:form.ui.form.mini [:div.ui.action.input
-                                  [:input {:style {:width "120px"}  :value name
+                                  [:input {:style {:width "100px"}  :value name
                                            :on-change (fn [evt] (->
                                                                  evt
                                                                  .-target
@@ -113,7 +113,7 @@
                   (doall (map (fn [{id "id" name "name" :as person}]
                                 (let [is-in-edit (get-in @state [:people-to-edit id])]
                                   [:li.item {:key id}
-                                   [:div {:style {:min-width "240px" :display "inline-flex"}}
+                                   [:div {:style {:min-width "200px" :display "inline-flex"}}
                                     (if is-in-edit
                                       [edit-person id state]
                                       [:span
@@ -142,8 +142,9 @@
                             #(into [person] %)))}}
    (fn [data {fetch :fetch}]
      (let [name (get-in @state [:new-person "name"] "")]
-       [:div [:form.ui.form [:div.ui.action.input
+       [:div {:style {:margin "0 auto" :display "table"}} [:form.ui.form [:div.ui.action.input
                              [:input {:value name
+                                      :style {:max-width "200px"}
                                       :on-change (fn [evt] (->
                                                             evt
                                                             .-target
@@ -155,8 +156,9 @@
                                                                (fetch {:vars {:data (get @state :new-person)}})))}
                               "Create Person"]]]]))))
 
+
 (defn home-page []
-  [:div [:h2 "Welcome to the Datomic Demo"]
+  [:div [:h2 {:style {:text-align "center"}} "Welcome to the Datomic Demo"]
    [create-person state]
    [:div.ui.hidden.divider]
    [list-people]])
@@ -200,4 +202,7 @@
   (accountant/dispatch-current!)
   (mount-root))
 
-  ; (init!)
+(set! (.-onload js/window) init!)
+
+(defn ^:after-load re-render []
+  (mount-root))
