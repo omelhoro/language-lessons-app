@@ -15,8 +15,11 @@ WORKDIR /app
 COPY ./backend/project.clj /app
 RUN lein deps
 COPY ./backend /app
+
 COPY --from=frontend-builder /app/target/cljsbuild/public/js/app.js /app/resources/public
-COPY --from=frontend-builder /app/resources/public/* /app/resources/public/
+COPY --from=frontend-builder /app/resources/public /app/resources/public/
+
+RUN ls /app/resources/public/
 RUN sed -i -e 's/cljs-out\/dev-main.js/\/app.js/g' /app/resources/public/index.html
 RUN lein uberjar
 
