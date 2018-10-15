@@ -75,17 +75,21 @@
                            :queries [[:update_person {:data :$data}
                                       [:name :id]]]})
     :hooks {:after-fetch (fn [{person "update_person"}]
-                           (swap!
+                           (do (swap!
                             graphql-cache
                             update-in
                             [list-people-q :data "people"]
                             #(->> %
                                   (position (fn [item] (= (get item "id") (get person "id"))))
-                                  ((fn [ix] (update % ix (fn [val] (merge val person))))))))}}
+                                  ((fn [ix] (update % ix (fn [val] (merge val person)))))))
+                            (swap! state update-in [:people-to-edit] #(dissoc % id))
+)
+                                  )}}
    (fn [data {fetch :fetch}]
      (let [{name "name" id "id"} (get-in @state [:people-to-edit id])]
        [:div [:form.ui.form.mini [:div.ui.action.input
-                                  [:input {:style {:width "100px"}  :value name
+                                  [:input {:style {:width "130px"}
+                                           :value name
                                            :on-change (fn [evt] (->
                                                                  evt
                                                                  .-target
@@ -112,17 +116,17 @@
                   {:style {:display "table" :margin "0 auto"}}
                   (doall (map (fn [{id "id" name "name" :as person}]
                                 (let [is-in-edit (get-in @state [:people-to-edit id])]
-                                  [:li.item {:key id}
-                                   [:div {:style {:min-width "200px" :display "inline-flex"}}
+                                  [:li.item {:key id :style {:display "flex"}}
+                                   [:div
+                                   {:style {:width "130px"}}
                                     (if is-in-edit
                                       [edit-person id state]
                                       [:span
                                        name])]
-                                   [:button.ui.button.purple.mini {:on-click (fn []
-                                                                               (if is-in-edit
-                                                                                 (swap! state update-in [:people-to-edit] #(dissoc % id))
-                                                                                 (swap! state assoc-in [:people-to-edit id] person)))} " Edit"]
-                                   [delete-person id]]))
+                                   (if (not is-in-edit) [:div [:button.ui.button.purple.mini {:on-click (fn []
+                                                                                 (swap! state assoc-in [:people-to-edit id] person))} " Edit"] [delete-person id]]
+                                    "")
+                                   ]))
                               people))]])))))
 
 (defn create-person [state]
@@ -144,7 +148,7 @@
      (let [name (get-in @state [:new-person "name"] "")]
        [:div {:style {:margin "0 auto" :display "table"}} [:form.ui.form [:div.ui.action.input
                              [:input {:value name
-                                      :style {:max-width "200px"}
+                                      :style {:max-width "170px"}
                                       :on-change (fn [evt] (->
                                                             evt
                                                             .-target
