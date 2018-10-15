@@ -1,0 +1,15 @@
+{
+  "short_name": "Clojure/Datomic PG",
+  "name": "Clojure + Datomic + GraphQL Playground",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "300x300"
+    }
+  ],
+  "display": "fullscreen",
+  "theme_color": "#6205FF",
+  "background_color": "#6205FF",
+  "start_url": "/"
+}
