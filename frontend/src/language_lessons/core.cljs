@@ -12,7 +12,7 @@
 
 (defonce state (atom {:new-person {}, :people-to-edit {}}))
 
-(def endpoint (if (= js/location.host "localhost:9500") "http://localhost:3000" ""))
+(def endpoint (if (= js/location.host "localhost:3449") "http://localhost:3000" ""))
 
 (defn position
   [pred coll]

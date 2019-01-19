@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   language-lessons:
     image: omelhoro1/language-lessons
     container_name: language-lessons
@@ -38,7 +37,7 @@ services:
     image: omelhoro1/datomic-docker
     container_name: datomic-transactor-ll
     restart: unless-stopped
-    command:  ./bin/transactor ./config/dev-transactor-test.properties
+    command: ./bin/transactor ./config/dev-transactor.properties
     volumes:
       - /home/captain/datomic-data:/data
     networks:

@@ -165,7 +165,7 @@
 
 (def app (->
           #'routes
-          (wrap-cors :access-control-allow-origin [#"http://localhost:9500"]
+          (wrap-cors :access-control-allow-origin [#"http://localhost:3449"]
                       :access-control-allow-methods [:post])
           (wrap-resource "public")
           wrap-keyword-params

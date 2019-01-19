@@ -9,5 +9,6 @@
     (do
       (println (str "Starting server on port " port))
       (create-app-state)
-      (run-jetty app {:port port :join? false})))
+      (run-jetty app {:port port :join? false})
+      (println "App started")))
   )
