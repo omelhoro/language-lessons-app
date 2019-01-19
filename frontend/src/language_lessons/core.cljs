@@ -31,6 +31,7 @@
      :params          {:query  query
                        :variables vars}}))
 
+
 (defonce graphql-cache (atom {}))
 
 (defn graphql [{op :op query :query {after-fetch :after-fetch} :hooks} children]
