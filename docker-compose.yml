@@ -8,7 +8,8 @@ services:
       - datomic-transactor-ll
       - datomic-peer-ll
     labels:
-      - "traefik.frontend.rule=Host:language-lessons.software-unchained.com"
+      - traefik.frontend.rule=Host:language-lessons.software-unchained.com
+      - traefik.enable=true
     environment:
       - DATABASE_NAME=language-lessons
       - DATABASE_PASS=mega-pass
@@ -16,7 +17,6 @@ services:
       - PEER_HOST=datomic-peer-ll:8998
     networks:
       - proxy-tier
-      - backbone
 
   datomic-peer-ll:
     image: omelhoro1/datomic-docker
