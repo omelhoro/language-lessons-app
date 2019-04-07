@@ -30,8 +30,6 @@ services:
       - datomic-transactor-ll
     command: ./bin/start-peer.sh
     restart: unless-stopped
-    networks:
-      - proxy-tier
 
   datomic-transactor-ll:
     image: omelhoro1/datomic-docker
@@ -40,8 +38,6 @@ services:
     command: ./bin/transactor ./config/dev-transactor.properties
     volumes:
       - /home/captain/datomic-data:/data
-    networks:
-      - proxy-tier
 
 networks:
   proxy-tier:
