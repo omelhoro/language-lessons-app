@@ -17,6 +17,7 @@ services:
       - PEER_HOST=datomic-peer-ll:8998
     networks:
       - proxy-tier
+      - backbone
 
   datomic-peer-ll:
     image: omelhoro1/datomic-docker
