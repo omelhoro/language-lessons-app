@@ -16,7 +16,7 @@ services:
       - PEER_HOST=datomic-peer-ll:8998
     networks:
       - proxy-tier
-      - bridge
+      - backbone
 
   datomic-peer-ll:
     image: omelhoro1/datomic-docker
@@ -32,7 +32,7 @@ services:
     command: ./bin/start-peer.sh
     restart: unless-stopped
     networks:
-      - bridge
+      - backbone
 
   datomic-transactor-ll:
     image: omelhoro1/datomic-docker
@@ -42,10 +42,10 @@ services:
     volumes:
       - /home/captain/datomic-data:/data
     networks:
-      - bridge
+      - backbone
 
 networks:
   proxy-tier:
     external: true
-  bridge:
-    internal: true
+  backbone:
+    external: true
